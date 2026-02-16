@@ -1,0 +1,114 @@
+
+$(function(){
+	
+	
+	/*学生成绩单*/
+	$('#mainNavbox li').on('click',function(){
+//		var a=$(this).index();
+//		$(this).addClass('on').siblings('li').removeClass('on');
+//		if(a==0)
+//		{
+//				
+//			$(this).next('#subTbox').show();
+//			$('#conBar').hide();
+//			
+//		}
+//		else if	(a==2)
+//		{
+//			$(this).next('#conBar').show();
+//			$('#subTbox').hide();
+//		}
+	});
+	
+	
+	$('#subTbox').on('click','a',function(){
+		$(this).addClass('on').siblings().removeClass('on');	
+	});
+	
+	/*成绩单隔行灰色背景*/
+	$('#stScoreTab tr:even').each(function(index, element) {
+        $(this).children('td').css('background','#f9f9f9');
+		
+    });
+	
+	/*点击左侧导航右侧内容滚动到对应位置开始*/
+	
+	$('#conBar dl.s-nav-box').on('click','dt',function(){
+		if($(this).parent().hasClass('on'))
+		{
+			$(this).parent().removeClass('on');
+		}
+		else
+		{
+			$(this).parent().addClass('on').siblings().removeClass('on');
+		}
+	});
+
+	$('#conBar dl.s-nav-box').on('click','dd',function(){
+		
+	
+		$(this).addClass('on').siblings('dd').removeClass('on');
+		var aIndex=$(this).parent().index();
+		var aidx=$(this).index()-1;
+		var atop=$('#contentPane .subject-wrap').eq(aIndex).children('.test-wrap').eq(aidx).offset().top;
+		$(window).scrollTop(atop)
+	});
+
+	/*点击左侧导航右侧内容滚动到对应位置end--------*/
+	
+	/*左侧导航固定－－右侧内容滚动对应导航高亮*/
+	var aTop=$('#mainNavbox').offset().top;
+	$(window).scroll(function(){
+			var sTop=$(window).scrollTop();
+			var aw1=$(window).width();
+			var aw0=$('.main-wrap').width();
+			var aleft=Math.round((aw1-aw0)/2);
+			if(sTop>0)
+			{
+				$('#mainNavbox').css({'position':'fixed','top':'103px','left':aleft});
+				$('#contentPane').css({'position':'absolute','left':'16.429rem'});
+			}
+			else 
+			{
+				$('#mainNavbox').css({'position':'relative','top':0,'left':0});
+			}
+		
+		$('.main-con').children('div.subject-wrap').each(function(index, element) {
+            		var aIndex=$(this).index()-1;
+					var atops=$(this).offset().top;
+					var sTop=$(window).scrollTop();
+					if(atops<=sTop)
+					{
+						$('#conBar').children('dl').eq(aIndex).addClass('on').children('dd:first').addClass('on');
+						$('#conBar').children('dl').eq(aIndex).siblings().removeClass('on');
+						
+						$(this).children('.test-wrap').each(function(index, element) {
+                            var aDex=$(this).index()-1;
+							var atop=$(this).offset().top;
+							if(atop<=sTop)
+							{
+								$('#conBar').children('dl').eq(aIndex).children('dd').eq(aDex).addClass('on').siblings().removeClass('on');	
+								$('#conBar').children('dl').eq(aIndex).siblings().children('dd').removeClass('on');
+							}
+                        });
+					}
+        	});
+	});
+	/*左侧导航移动到顶后固定－－右侧内容滚动对应导航高亮end*/
+		
+	/*点击滑块返回顶端开始*/
+	$('#goTop').on('click',function(){
+		$(window).scrollTop('0');
+	});
+	
+	/*点击滑块返回顶端end*/
+	
+	
+	
+	
+	
+});
+
+
+
+

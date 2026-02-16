@@ -1,0 +1,634 @@
+
+$(function(){
+	/*顶部导航*/
+	//$('.tnav li').on('click',function(){
+		//$(this).children().addClass('selected');
+		//$(this).siblings().children().removeClass('selected');
+	//});
+	
+	/*顶部右侧个人信息下拉框*/
+   $('#showTopmenu').on({
+	   			"mouseover":function(){
+					    $('span.top-arrow').addClass('down');
+						$('.top-menulist').show();	
+						}, 
+				"mouseout":function(){
+							$('.top-menulist').hide();
+							$('span.top-arrow').removeClass('down');
+				}	
+	   });
+	
+	/*学生－考试列表页面*/
+	$('#testList tr,#stTestList tr').hover(
+		function(){
+			$(this).children().addClass('on');
+		},
+		function(){
+			$(this).children().removeClass('on');
+		})
+	
+	/*学生－分类错题本页面----------------------------------*/
+	<!--搜索区输入框样式的变化--共用-->
+	$('#seachPane .sbox').on('click',function(){
+		if($(this).hasClass('on'))
+		{	
+			$(this).removeClass('on');
+			$(this).children('div').hide();
+		}
+		else
+		{	
+			$(this).addClass('on').siblings('.sbox').removeClass('on').children('div').hide();
+			$(this).children('div').show();
+		}	
+		
+	});
+	
+	/*选择科目－考试项目*/
+	$('#chooseKm .subject-list,#chooseKsxm .test-list').on('click','span',function(){
+		var atext = $(this).text();
+		$(this).parent().siblings('input').val(atext);
+	});
+	
+	$('#choseAll').on('click',function(){
+		var anum=$('#totalT').text();
+		if($(this).hasClass('on'))
+		{
+			$(this).removeClass('on');
+			$('#aChose').text('0');	
+			$('#showTpane').find('.add-opt').removeClass('export-opt').text('加入队列');
+		}
+		else
+		{
+			$(this).addClass('on');	
+			$('#aChose').text(anum);
+			$('#showTpane').find('.add-opt').addClass('export-opt').text('移出队列');
+		}
+	});
+	
+	$('#showTpane').find('.add-opt').on('click',function(){
+		if($(this).hasClass('export-opt'))	
+		{
+			$(this).removeClass('export-opt').text('加入队列');
+		}
+		else
+			$(this).addClass('export-opt').text('移出队列');
+	});
+	
+	
+	/*学生成绩单*/
+	/*左侧导航*/
+	$('#mainNavbox li').on('click',function(){
+//		var a=$(this).index();
+//		$(this).addClass('on').siblings('li').removeClass('on');
+//		if(a==0)
+//		{
+//			$(this).next('#subTbox').show();
+//			$('#conBar').hide();
+//			
+//		}
+//		else if	(a==2)
+//		{
+//			$(this).next('#conBar').show();
+//			$('#subTbox').hide();
+//		}
+	});
+	
+	$('#subTbox').on('click','a',function(){
+		$(this).addClass('on').siblings().removeClass('on');	
+	});
+	
+	/*成绩单隔行灰色背景*/
+	$('#stScoreTab tr:even').each(function(index, element) {
+        $(this).children('td').css('background','#f9f9f9');
+		
+    });
+	
+	/*点击滑块返回顶端开始*/
+	$('#goTop').on('click',function(){
+		$(window).scrollTop('0');
+	});
+	
+	/*点击滑块返回顶端end*/
+	/*随堂清页面---------------------*/
+	/*点击“详细”*/
+	$('#STestWrap').on('click','.st-detail',function(){
+		$('#StqInfor').show();
+	});
+	$('#StqInfor .pop-close,#StqInfor .know-btn').on('click',function(){
+		$('#StqInfor').hide();
+		});
+	
+	
+	
+	/*评价查看页面---------------------*/
+	/*选择时间--学科*/
+	$('#chooseTime .time-list,#chooseKmT .subject-list').on('click','span',function(){
+		var atxt=$(this).text();
+		$(this).parent().siblings('input').val(atxt);	
+	});
+	
+	/*点击查看更多*/
+	$('#seeMore').on('click',function(){
+		if($(this).text()=='点击查看更多')
+		{
+			$(this).text('收起');	
+			$(this).parent('.coment-box').css('height','auto');
+		}
+		else
+		{
+			$(this).text('点击查看更多');	
+			$(this).parent('.coment-box').css('height','265px');
+		}
+	});
+	
+	/*教师－班级学生信息页面--------------------------------------*/
+	/*选择年级*/
+	$('#chooseGrade .grade-list').on('click','span',function(){
+		var atxt=$(this).text();
+		$(this).addClass('on').siblings().removeClass('on');
+		$(this).parent().siblings('.txt02').val(atxt);
+		$(this).parent().siblings('.txt02').attr("newgradeid",$(this).attr("id"));
+		 getClass("classselect","newclassid",$("#newgradeid").attr("newgradeid"));
+		
+	});
+		
+	/*选择班级*/
+	$('#chooseClass .subject-list').on('click','span',function(){
+		var atxt=$(this).text();
+		$(this).addClass('on').siblings().removeClass('on');
+		$(this).parent().siblings('.txt01').val(atxt);
+		$(this).parent().siblings('.txt01').attr("newclassid",$(this).attr("id"))
+		
+		
+	});
+		
+	/*学生详细信息页面--------------------------------*/	
+	$('#sTestList tr').on('click','.details',function(){
+		var aobj=$(this).parent().parent().next().children().children('.sts-score');
+		if($(aobj).css('display')=='none')
+		{	
+			$(this).text('收起').addClass('on');
+			$(aobj).show();
+		}
+		else
+		{
+			$(this).text('展开').removeClass('on');
+			$(aobj).hide();
+		}
+	});
+	
+	/*学生历次考试趋势图弹窗*/
+	$('#sTestList tr').on('click','.s-xspic.s-zf',function(){
+		$('#tendcyChart').show();
+	});
+	
+	$('#tendcyChart .pop-close,#tendcyChart .know-btn').on('click',function(){
+			$('#tendcyChart').hide();
+	});
+	
+	
+	
+	
+	/*班级成绩简表-----------------------------*/
+	/*选择考试项目*/
+	$('#chooseTPt .test-list,#chooseTPt_1 .test-list').on('click','span',function(){
+		var atxt=$(this).text();
+		$(this).addClass('on').siblings().removeClass('on');
+		$(this).parent().siblings('.txt02').val(atxt);
+		
+	});
+	
+	/*选择科目*/	
+	$('#TchooseKm .subject-list').on('click','span',function(){
+		var atext = $(this).text();
+		$(this).parent().siblings('input').val(atext);
+	});	
+	
+	/*选择是否显示单科名次*/
+	$('.chose-dk').on('click',function(){
+		if($(this).hasClass('on'))
+			$(this).removeClass('on');
+		else
+			$(this).addClass('on');
+	});
+	
+	$('#bjPane').on('click','.pop-chart',function(){
+		$('#tendcyChart').show();
+	});
+	
+	
+	/*班级试题分析页面-错题名单弹窗*/
+	$('.table').on('click','span.name-list',function(){
+			$('#erorSName').show();
+	});
+	$('#erorSName .pop-close,#erorSName .know-btn').on('click',function(){
+			$('#erorSName').hide();
+	});
+	
+	/*小题分析折叠展开*/
+	$('#showBjxt').on('click',function(){
+		if($(this).hasClass('on'))
+		{
+			$(this).text('展开').removeClass('on');
+			$(this).siblings('.bjxt-box').css('height','454px');
+		}
+		else
+		{
+			$(this).text('收起').addClass('on');
+			$(this).siblings('.bjxt-box').css('height','auto');
+		}
+	});
+	
+	/*班级成绩分析页面-主观题得分名单弹窗*/
+	$('.table').on('click','span.zgt-name-list',function(){
+			$('#zgtSFName').show();
+	});
+	$('#zgtSFName .pop-close,#zgtSFName .know-btn').on('click',function(){
+			$('#zgtSFName').hide();
+	});
+	
+	
+	
+	
+	/*成绩分析报告页面---------------------*/
+	/*成绩分析难度（难度比例，信度，区分度）说明隐藏层显示*/
+	$('.p-num-inst .helps').on({
+			'mouseover':function(){
+					$(this).siblings('div.ptips').show();	
+			},
+			'mouseleave':function(){
+					$(this).siblings('div.ptips').hide();	
+			}		
+	});
+	
+	/*点击查看缺考学生*/
+	$('.paper-tips .see-none').on('click',function(){
+		$('#noTestSts').show();
+	});
+	
+	$('#noTestSts .pop-close,#noTestSts .know-btn').on('click',function(){
+			$('#noTestSts').hide();
+	});
+	
+	
+	/*学生错题中心----------------------------------*/
+	/*左侧导航*/
+	$('#mainNavbox').on('click','dl.nav-wrap',function(){
+			$(this).addClass('on').siblings().removeClass('on');
+	});
+	
+	/*选择班级*/
+	$('#chooseSts .name-box').on('click','span',function(){
+		var atxt=$(this).text();
+		$(this).addClass('on').siblings().removeClass('on');
+		$(this).parent().siblings('.txt01').val(atxt);
+		
+	});
+	/*前X名分布----------------------------------*/
+	
+	$('#xDistribute').on('click','.show-more',function(){
+		if($(this).text()=='点击显示更多')
+		{
+			$(this).text('收起');
+			$(this).siblings().css('height','auto');
+		}
+		else
+		{
+			$(this).text('点击显示更多');
+			$(this).siblings().css('height','294px');
+		}
+		
+	});
+	
+	/*知识点分析页面-----------------------------------*/
+	
+	$('#KnowPoint').on('click','.score-inf',function(){
+			$('#pointStsList').show();
+	});
+	$('#pointStsList .pop-close,#pointStsList .know-btn').on('click',function(){
+			$('#pointStsList').hide();
+	});
+	
+	/*科目分层教学------------------------------------*/
+	
+	/*类型选择*/
+	$('#TchoseType .subject-list span').on('click',function(){
+			var atxt=$(this).text();
+			$(this).parent().siblings('.txt01').val(atxt);
+			if($(this).index()=='0')
+			{
+				$(this).parent().parent().siblings('.fc-wrap').children().children('var').hide();
+			}
+			else
+			{
+				$(this).parent().parent().siblings('.fc-wrap').children().children('var').show();
+			}
+	});
+	
+	
+	
+	/*科目对应教学-----------------------------------------------------*/
+	/*点击“全选”*/
+	$('#subjectTeach .chose-all').on('click',function(){
+		if($(this).hasClass('on'))
+		{
+			$(this).removeClass('on');
+			$('#subjectTeach .cbox-icon').removeClass('on');
+		}
+		else
+		{
+			$(this).addClass('on');
+			$('#subjectTeach .cbox-icon').addClass('on');
+		}
+	});
+	
+	/*点击某一个复选框*/
+	$('#subjectTeach').on('click','.cbox-icon',function(){
+		if($(this).hasClass('on'))
+		{
+			$(this).removeClass('on');
+			$('#subjectTeach .chose-all').removeClass('on');
+		}
+		else
+		{
+			$(this).addClass('on');
+			if($('#subjectTeach .cbox-icon').length==$('#subjectTeach .cbox-icon.on').length)
+				$('#subjectTeach .chose-all').addClass('on');
+		}
+	});
+	
+	/*临界生页面------------------------------------*/
+	
+	/*点击一个班级*/
+	$('#TshowClass').on('click','.bj-box',function(){
+		if($(this).hasClass('on'))
+		{
+			$(this).removeClass('on');
+			$('#TshowClass .chose-all').removeClass('on');
+		}
+		else
+		{
+			$(this).addClass('on');
+			if($('#TshowClass .bj-box.on').length==$('#TshowClass .bj-box').length)
+				$('#TshowClass .chose-all').addClass('on');
+		}
+	});
+	
+	
+	/*点击“全部班级”*/
+	$('#TshowClass .chose-all').on('click',function(){
+		if($(this).hasClass('on'))
+		{
+			$(this).removeClass('on');
+			$(this).siblings('.bj-box').removeClass('on');
+		}
+		else
+		{
+			$(this).addClass('on');
+			$(this).siblings('.bj-box').addClass('on');
+		}
+	});
+	
+	/*班级列表展开收起*/
+	$('#TshowClass .show-m').on('click',function(){
+		if($(this).hasClass('on'))
+		{
+			$(this).removeClass('on').text('展开');
+			$(this).siblings('.class-wrap').css('height','35px');
+		}
+		else
+		{
+			$(this).addClass('on').text('收起');
+			$(this).siblings('.class-wrap').css('height','auto');
+		}
+	});
+	
+	
+	/*点击显示更多*/
+	$('.tab-wrap .show-more').on('click',function(){
+		var aa=$(this).text();
+		if(aa=='点击显示更多')
+		{
+			$(this).text('收起');
+			$(this).siblings('.seem-box').css('height','auto');
+		}
+		else
+		{
+			$(this).text('点击显示更多');
+			$(this).siblings('.seem-box').css('height','294px');
+		}
+	});
+	
+	/*配置试题库*/
+	$('#TsettingTK').on('click','.th-wrap',function(){
+		if($(this).hasClass('on'))
+			$(this).removeClass('on');
+		else
+			$(this).addClass('on');
+	});
+	
+	$('#TsettingTK').on('click','.th-box span', function(){
+		 var atxt=$(this).text();
+		 $(this).parent().siblings('.txt01').val(atxt);
+	});
+	
+	/*点击“添加”*/
+	$('#TsettingTK').on('click','.add-th.opt',function(){
+		 var a=$(this).siblings('.bdth-wrap').children('.th-wrap').length;
+		 $(this).siblings('.bdth-wrap').append('<div class="th-wrap">'+
+								'<input type="text" class="txt01" readonly /><span class="arrow-1"></span>'+
+								'<div class="th-box">'+
+									'<span>1</span><span>2</span><span>1-1</span><span>2-1</span><span>3-1</span>'+
+								'</div>'+
+							'</div>');	
+		 $(this).siblings('.del-th').addClass('opt');
+		 if(a==2)
+			$(this).removeClass('opt');
+			
+		
+	});
+	
+	/*点击“删除”*/
+	$('#TsettingTK').on('click','.del-th.opt',function(){
+		var a=$(this).siblings('.bdth-wrap').children('.th-wrap').length;
+		$(this).siblings('.bdth-wrap').children('.th-wrap:last').remove();
+		$(this).siblings('.add-th').addClass('opt');	
+		if(a==2)
+			$(this).removeClass('opt');
+	});
+	
+	/*教务主任－－考试项目管理*/
+	/*点击“配置图片“*/
+	$('#creatPaperTab').on('click','.design-pic',function(){
+		$('#setingPicSite').show();
+	});
+	$('#setingPicSite a.pop-close,#setingPicSite .pop-btn-x').on('click',function(){
+		$('#setingPicSite').hide();
+	});
+	/*点击“编辑”*/
+	$('#creatPaperTab').on('click','.edit-km',function(){
+		$('#editSubjectPop').show();
+	});
+	$('#editSubjectPop a.pop-close,#editSubjectPop .pop-btn-x').on('click',function(){
+		$('#editSubjectPop').hide();
+	});
+	
+	
+	/*教师－成长档案*/
+	/*行为设置*/
+	$('#goodBehavior .add-byxw').on('click',function(){
+		$('#addBehaviorBY').show();
+	});
+	
+	$('#addBehaviorBY .know-btn,#addBehaviorBY a.pop-close').on('click',function(){
+		$('#addBehaviorBY').hide();
+	});
+	
+	$('#XzBehavior .add-xzxw').on('click',function(){
+		$('#addBehaviorXZ').show();
+	});
+	
+	$('#addBehaviorXZ .know-btn,#addBehaviorXZ a.pop-close').on('click',function(){
+		$('#addBehaviorXZ').hide();
+	});
+	
+	$('.edit-xw').on('click',function(){
+		$('#editBehavior').show();	
+		
+	});
+	$('#editBehavior .know-btn,#editBehavior a.pop-close').on('click',function(){
+		$('#editBehavior').hide();
+	});
+	
+	$('.studts-pane.pj-sts').on('click','li',function(){
+		var aname=$(this).children('.s-name').text();
+		$('#showStBehavior').show();
+		$('#showStBehavior .top .s-name').text(aname);
+	})
+	$('#showStBehavior .know-btn,#showStBehavior a.pop-close').on('click',function(){
+		$('#showStBehavior').hide();
+	});
+	
+	/*家校互动-发送成绩短信*/
+	$('#editQZ').on('click','.edit-xw',function(){
+		 $('#showLXR').show();
+	});
+	$('#showLXR .know-btn,#showLXR a.pop-close').on('click',function(){
+		$('#showLXR').hide();
+	});
+	
+	
+	/*选择考试类型*/
+	$('#chosePaperType').on('click',function(){
+		if($(this).children('.tk-subject-box').css('display')=='none')
+			$(this).children('.tk-subject-box').show();
+		else
+			$(this).children('.tk-subject-box').hide();
+	});
+	$('#chosePaperType .tk-subject-box dl').on('click','dd',function(){
+		var atext=$(this).text();
+		$(this).addClass('on').siblings().removeClass('on');
+		$(this).parent().parent().siblings('.txt01').val(atext);
+	});
+	
+	
+	/*点击“查看发送成绩”*/
+	$('.s-cjmsg').on('click','.s-msg-cj',function(){
+		$('#showSendCj').show();
+	});
+	$('#showSendCj .know-btn,#showSendCj a.pop-close').on('click',function(){
+		$('#showSendCj').hide();
+	});
+	
+	$('.s-cjmsg').on('click','.see-mscore',function(){
+		$('#msgCondation').show();
+	});
+	$('#msgCondation .know-btn,#msgCondation a.pop-close').on('click',function(){
+		$('#msgCondation').hide();
+	});
+	
+	
+	
+	
+	
+	<!--“点击显示更多”-->
+	$('#showAllXwG,#showAllXwE').on('click',function(){
+		if($(this).text()=='点击显示更多')
+		{
+			$(this).text('收起');	
+			$(this).siblings('.xw-scrol-wrap').css('height','auto');
+		}
+		else
+		{
+			$(this).text('点击显示更多');	
+			$(this).siblings('.xw-scrol-wrap').css('height','242px');
+		}
+	});
+	
+	/*试卷试题页面*/
+	/*点击‘新建试卷'*/
+	$('.creat-tbtn.new-sj').on('click',function(){
+		$('#CreatSJ').show();
+	});
+	$('#CreatSJ .know-btn,#CreatSJ a.pop-close').on('click',function(){
+		$('#CreatSJ').hide();
+	});
+	
+	$('.sj-wrap').on('click','.tablelink.edit-xw',function(){
+		$('#EditSj').show();
+	});
+	$('#EditSj .know-btn,#EditSj a.pop-close').on('click',function(){
+		$('#EditSj').hide();
+	});
+	
+	/*试题管理页面*/
+	$('.show-stnr').on('click',function(){
+		
+		if($(this).text()=='点击显示更多')
+		{
+			$(this).text('收起');	
+			$(this).siblings('.exercise').removeClass('hidden');
+		}
+		else
+		{
+			$(this).text('点击显示更多');	
+			$(this).siblings('.exercise').addClass('hidden');
+		}
+	
+	});
+
+	/*校长考试列表页面*/////////////////////////////////////////////////////////
+	/*选择年级\选择考试类型*/
+	$('#choseGrade,#choseKsType').on('click',function(){
+		
+		if($(this).children('.subject-list').css('display')=='block')
+		{
+			
+			$(this).children('.subject-list').hide();
+		}
+		else
+		{
+				
+			$(this).children('.subject-list').show();
+		}
+	
+	});
+	
+	
+	$('#choseGrade .subject-list').on('click','span',function(){
+		var atext = $(this).text();
+		$(this).parent().siblings('input').val(atext);
+		$(this).parent().siblings('input').attr("newgradeid",$(this).attr("id"));
+	});
+	$('#choseKsType .subject-list').on('click','span',function(){
+		var atext = $(this).text();
+		$(this).parent().siblings('input').val(atext);
+		$(this).parent().siblings('input').attr("newexamtype",$(this).attr("id"));
+	});
+	
+	/**/
+	
+	
+});
+
+
